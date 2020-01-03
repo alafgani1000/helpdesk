@@ -34,7 +34,7 @@ class IncidentController extends Controller
             'text' => $request->incident,
             'location' => $request->location,
             'phone' => $request->phone,
-            'user_key' => Auth::user()->id,
+            'user_id' => Auth::user()->id,
             'stage_id' => '1'
         ]);
 

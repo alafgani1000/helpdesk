@@ -443,6 +443,7 @@
                     $("#alertSuccess").html(data);
                     $("#alertSuccess").css({'display':'block'});
                     resetForm();  
+                    table.ajax.reload();
                 });
             });
         });

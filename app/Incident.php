@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Incident extends Model
 {
-    protected $fillable = ['text','location','phone','user_key','stage_id','resolve_text','resolve_date'];
+    protected $fillable = ['text','location','phone','user_id','stage_id','resolve_text','resolve_date'];
     
     public function incidentAttachments()
     {
