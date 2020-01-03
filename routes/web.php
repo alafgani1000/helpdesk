@@ -29,6 +29,8 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('incident.store');
         Route::post('/delete', 'IncidentController@delete')
             ->name('incident.delete');
+        Route::get('/edit', 'IncidentController@edit')
+            ->name('incident.edit');
     });
 });
 

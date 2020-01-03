@@ -65,6 +65,12 @@ class IncidentController extends Controller
         
     }
 
+    public function edit(Request $request)
+    {
+        $incident = Incident::find($request->id);
+        return view('incidents.edit',compact('incident'));
+    }
+
     public function delete(Request $request)
     {
         $incident = Incident::find($request->id);
