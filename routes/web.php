@@ -23,10 +23,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'incident'], function () {
         Route::get('','IncidentController@index')
             ->name('incident.index');
-        Route::get('/data','IncidentController@data')
+        Route::post('/data','IncidentController@data')
             ->name('incident.data');
         Route::post('/store','IncidentController@store')
             ->name('incident.store');
+        Route::post('/delete', 'IncidentController@delete')
+            ->name('incident.delete');
     });
 });
 

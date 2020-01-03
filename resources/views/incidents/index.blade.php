@@ -94,12 +94,12 @@
     </div>
     <!-- END: Subheader -->
     <div class="m-content">
-        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-30" role="alert">
+        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-20 alert-success" role="alert" id="head-alert" style="display:none">
             <div class="m-alert__icon">
                 <i class="flaticon-exclamation m--font-brand"></i>
             </div>
-            <div class="m-alert__text">
-                the Datatable provides built-in support for operations over data such as sorting, filtering and paging performed in user browser(frontend).
+            <div class="m-alert__text" id="content-alert">
+                
             </div>
         </div>
         <div class="m-portlet m-portlet--mobile">
@@ -107,7 +107,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Datatable initilized from HTML table
+                            Data Incident
                         </h3>
                     </div>
                 </div>
@@ -192,18 +192,13 @@
             </div>
             <div class="m-portlet__body">
                 <!--begin: Search Form -->
-                <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                <div class="m-form m-form--label-align-right m--margin-top-5 m--margin-bottom-30">
                     <div class="row align-items-center">
                         <div class="col-xl-8 order-2 order-xl-1">
                             <div class="form-group m-form__group row align-items-center">
                                 <div class="col-md-4">
                                     <div class="m-input-icon m-input-icon--left">
-                                        <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch">
-                                        <span class="m-input-icon__icon m-input-icon__icon--left">
-                                            <span>
-                                                <i class="la la-search"></i>
-                                            </span>
-                                        </span>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -223,62 +218,37 @@
                 </div>
                 <!--end: Search Form -->
                 <!--begin: Datatable -->
-                <table class="" width="100%" id="dtincident">
+                <table class="table table-striped table-hover" width="100%" id="dtincident">
                     <thead>
                         <tr>
                             <th title="Field #1">
-                                Order ID
+                                Incident ID
                             </th>
                             <th title="Field #2">
-                                Owner
+                                Incident
                             </th>
                             <th title="Field #3">
-                                Contact
+                                Location
                             </th>
                             <th title="Field #4">
-                                Car Make
+                                User
                             </th>
                             <th title="Field #5">
-                                Car Model
+                                Contact
                             </th>
                             <th title="Field #6">
-                                Color
+                                Stage
                             </th>
                             <th title="Field #7">
-                                Deposit Paid
+                                Created at
                             </th>
                             <th title="Field #8">
-                                Order Date
+                                Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                16590-107
-                            </td>
-                            <td>
-                                Zandra Fisbburne
-                            </td>
-                            <td>
-                                (916) 6137523
-                            </td>
-                            <td>
-                                Pontiac
-                            </td>
-                            <td>
-                                Grand Am
-                            </td>
-                            <td>
-                                Puce
-                            </td>
-                            <td>
-                                $75343.80
-                            </td>
-                            <td>
-                                2016-09-08
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </table>
                 <!--end: Datatable -->
@@ -365,15 +335,11 @@
             </div>
         </div>
     </div>
-    <script>
-        $("#dtincident").mDatatable({
-
-        });
-    </script>
 </div>
 @endsection
 @push('scripts')
     <script>
+        var table = '';
         function resetForm(){
             $("#incident-text").val('');
             $("#location-name").val('');
@@ -415,6 +381,29 @@
                 $(this).parents(".attachment").remove();
             });
 
+            table = $('#dtincident').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('incident/data') }}",
+                    type: "POST",
+                    dataType: "JSON",
+                    data:{ _token: "{{csrf_token()}}"}
+                },
+                columns: [
+                        {data:'id', name:'id'},
+                        {data:'text', name:'text'},
+                        {data:'location', name:'location'},
+                        {data:'user.name', name:'user.name'},
+                        {data:'phone', name:'phone'},
+                        {data:'stage.text', name:'stage.text'},
+                        {data:'created_at', name:'created_at'},
+                        {data:'id', render: function(d){
+                            return '<div class="btn btn-group"><button class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleted('+d+')"><i class="fa fa-trash"></i></button></div>';
+                        }}
+                    ],
+            });
+
            $("#formincident").submit(function(event){
                 event.preventDefault();
                 let url = $(this).attr('action');
@@ -438,10 +427,15 @@
                     }
                 })
                 .fail(function(data){
-                    console.log(data.responseJSON.errors);
-                    $("#helpIncident").html(data.responseJSON.errors.incident);
-                    $("#helpLocation").html(data.responseJSON.errors.location);
-                    $("#helpPhone").html(data.responseJSON.errors.phone);  
+                    if(data.responseJSON.errors.incident){
+                        $("#helpIncident").html(data.responseJSON.errors.incident);
+                    }
+                    if(data.responseJSON.errors.location){
+                        $("#helpLocation").html(data.responseJSON.errors.location);
+                    }
+                    if(data.responseJSON.errors.phone){
+                        $("#helpPhone").html(data.responseJSON.errors.phone); 
+                    } 
                     $("#alertSuccess").html('');
                     $("#alertSuccess").css({'display':'none'});                                    
                 })
@@ -450,8 +444,35 @@
                     $("#alertSuccess").css({'display':'block'});
                     resetForm();  
                 });
-           });
+            });
         });
-        
+
+        function deleted(id=null){
+            if(confirm('Hapus ?')){
+                $.ajax({
+                    type:"POST",
+                    url:"{{ url('incident/delete') }}",
+                    cache:false,
+                    data:{
+                        id:id
+                    },
+                    headers:{
+                        'X-CSRF-TOKEN':$('#token').attr('content')
+                    },
+                    beforeSend:function() {
+                
+                    }
+                })
+                .fail(function(data){
+                    $("#content-alert").html('');
+                    $("#head-alert").css({'display':'none'});                                  
+                })
+                .done(function(data){
+                    $("#content-alert").html(data);
+                    $("#head-alert").css({'display':'block'});
+                    table.ajax.reload();  
+                });
+            }
+        }        
     </script>
 @endpush

@@ -41,6 +41,8 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--end::Page Vendors -->
 		<link href="{{ asset('assets/vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/demo/default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+		
 		<!--end::Base Styles -->
 		<link rel="shortcut icon" href="{{ asset('assets/demo/default/media/img/logo/favicon.ico') }}" />
 		
@@ -55,6 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!--begin::Page Snippets -->
 		<script src="{{ asset('assets/app/js/dashboard.js') }}" type="text/javascript"></script>
 		<!--end::Page Snippets -->
+		<script src="{{ asset('assets/datatables/datatables.min.js') }}" type="text/javascript"></script>
 
 		@stack('scripts')
 	</head>

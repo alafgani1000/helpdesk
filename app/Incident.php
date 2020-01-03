@@ -17,4 +17,9 @@ class Incident extends Model
     {
         return $this->belongsTo('App\Stage');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

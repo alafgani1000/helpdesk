@@ -18,7 +18,7 @@ class IncidentController extends Controller
 
     public function data()
     {
-        $incident = DataTables(Incident::all())->toJson();
+        $incident = DataTables(Incident::with(['stage','user'])->get())->toJson();
         return $incident;
     }
 
@@ -63,5 +63,15 @@ class IncidentController extends Controller
 
         return "Incident berhasil diinput.";
         
+    }
+
+    public function delete(Request $request)
+    {
+        $incident = Incident::find($request->id);
+        $incident->delete();
+
+        $incidenAttachment = IncidentAttachment::where('incident_id', $request->id)->delete();
+
+        return "Incident berhasil dihapus.";
     }
 }
