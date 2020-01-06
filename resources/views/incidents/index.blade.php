@@ -381,6 +381,28 @@
             resetForm();
         }
 
+        function delete_attachment(sys, id = null){
+            if(confirm('Delete Attachment ?')){
+                $.ajax({
+                    type:"POST",
+                    url:"{{ url('incident/delete_attachment') }}",
+                    data:{
+                        id:id,
+                        _token: "{{csrf_token()}}"
+                    }
+                    
+                })
+                .done(function(data){
+                    $("#alertSuccess").html(data);
+                    $("#alertSuccess").css({'display':'block'});
+                    $(sys).parent().parent().remove();
+                })
+                .fail(function(){
+                    
+                });
+            }        
+        }
+
         $(function(){
             $("#newIncident").click(function(){
                 resetAll();

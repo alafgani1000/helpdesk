@@ -71,6 +71,54 @@ class IncidentController extends Controller
         return view('incidents.edit',compact('incident'));
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'incident' => 'required',
+            'location' => 'required',
+            'phone' => 'required|numeric'
+        ]);
+
+        $incident = Incident::where('id',$request->id)->update([
+            'text' => $request->incident,
+            'location' => $request->location,
+            'phone' => $request->phone,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        // insert incedent data attachment 
+        if(!empty($request->file('files')))
+        {
+            foreach($request->file('files') as $files)
+            {
+                $dateNow    = Carbon::now()->toDateTimeString();
+                $date       = Carbon::parse($dateNow)->format('dmYHis');
+                $name       = $files->getClientOriginalName();
+                $username   = Auth::user()->id;
+                $filename   = $date.$username.$name;
+                // upload data
+                $item = $files->storeAs('files', $filename);
+                // input data file
+                $incident->incidentAttachments()->save(
+                    new IncidentAttachment([
+                        'file_name' => $filename, 
+                        'file_location' => $item, 
+                        'alias' => $name
+                    ])
+                );
+            }
+        }
+
+        return "Incident berhasil update.";
+    }
+
+    public function deleteAttachment(Request $request)
+    {
+        $incidenAttachment = IncidentAttachment::where('id', $request->id)->delete();
+
+        return "Incident berhasil dihapus.";
+    }
+
     public function delete(Request $request)
     {
         $incident = Incident::find($request->id);

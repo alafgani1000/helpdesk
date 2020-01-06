@@ -1,5 +1,5 @@
 
-<form id="formincident" action="{{ route('incident.store') }}" method="POST" enctype="multipart/form-data">
+<form id="formincident_edit" action="{{ route('incident.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="modal-body">
         <div class="alert alert-success" role="alert" style="display:none;" id="alertSuccess">
@@ -33,25 +33,32 @@
             </span>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-primary" id="addAttachment">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>File Attachment</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($incident->incidentAttachments as $item)
+                        <tr>
+                            <td>{{ $item->alias }}</td>
+                            <td><button type="button" class="btn btn-sm btn-danger" onclick="delete_attachment(this,'{{ $item->id }}')"><i class="fa fa-trash"></i></button>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="addAttachment_edit">
                 + Add
             </button>
         </div>                        
-        <div class="form-group m-form__group" id="detail">
+        <div class="form-group m-form__group" id="detail_edit">
             <label for="location-name" class="form-control-label">
                 Attachment:
             </label>
-            <div class="form-group">
-                <div class="input-group ">
-                    <input type="file" id="file2" class="form-control" name="files[]" id>
-                    
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger btn-lg" type="button">
-                            -
-                        </button>
-                    </span>
-                </div>
-            </div>
         </div>                    
     </div>
     <div class="modal-footer">
@@ -63,3 +70,68 @@
         </button>
     </div>
 </form>
+<script>
+ 
+    $(function(){
+        $("#addAttachment_edit").click(function(){
+            $("#detail_edit").append(
+                '<div class="form-group attachment detach">'+
+                    '<div class="input-group">'+
+                        '<input type="file" class="form-control" name="files[]">'+                                        
+                        '<span class="input-group-btn">'+
+                            '<button class="btn btn-danger btn-lg remove" type="button">-</button>'+
+                        '</span>'+
+                    '</div>'+
+                '</div>'
+            );
+        });
+
+        $("body").on("click",".remove",function(){
+            $(this).parents(".attachment").remove();
+        });
+
+        $("#formincident_edit").submit(function(event){
+            event.preventDefault();
+            let url = $(this).attr('action');
+            let method = $(this).attr('method');
+            let enctype = $(this).attr('enctype');
+            let data = new FormData(this);
+
+            $.ajax({
+                type:method,
+                url:url,
+                enctype:enctype,
+                processData:false,
+                contentType:false,
+                cache:false,
+                data:data,
+                headers:{
+                    'X-CSRF-TOKEN':$('#token').attr('content')
+                },
+                beforeSend:function() {
+                    resetMessage();
+                }
+            })
+            .fail(function(data){
+                if(data.responseJSON.errors.incident){
+                    $("#helpIncident").html(data.responseJSON.errors.incident);
+                }
+                if(data.responseJSON.errors.location){
+                    $("#helpLocation").html(data.responseJSON.errors.location);
+                }
+                if(data.responseJSON.errors.phone){
+                    $("#helpPhone").html(data.responseJSON.errors.phone); 
+                } 
+                $("#alertSuccess").html('');
+                $("#alertSuccess").css({'display':'none'});                                    
+            })
+            .done(function(data){
+                $("#alertSuccess").html(data);
+                $("#alertSuccess").css({'display':'block'});
+                resetForm();  
+                table.ajax.reload();
+            });
+        });
+    });
+    
+</script>
