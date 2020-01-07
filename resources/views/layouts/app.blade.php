@@ -1129,7 +1129,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								</a>
 							</li>
 							<li class="m-menu__item" aria-haspopup="true">
-								<a  href="#" class="m-menu__link m-menu__toggle">
+								<a  href="{{ route('request.index') }}" class="m-menu__link m-menu__toggle">
 									<i class="m-menu__link-icon flaticon-edit"></i>
 									<span class="m-menu__link-text">
 										Request

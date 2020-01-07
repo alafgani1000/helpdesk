@@ -17,9 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']], function() {
     Route::get('/home', 'HomeController@index')->name('home');
     
+    // route incident
     Route::group(['prefix' => 'incident'], function () {
         Route::get('','IncidentController@index')
             ->name('incident.index');
@@ -35,6 +36,14 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('incident.delete_attachment');
         Route::post('/update','IncidentAttachment@update')
             ->name('incident.update');
+    });
+
+    // route request
+    Route::group(['prefix' => 'request'], function(){
+        Route::get('', 'RequestController@index')
+            ->name('request.index');
+        Route::get('/data','RequestController@data')
+            ->name('request.data');
     });
 });
 

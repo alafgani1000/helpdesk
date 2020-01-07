@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center">
             <div class="mr-auto">
                 <h3 class="m-subheader__title m-subheader__title--separator">
-                    Incident
+                    Request
                 </h3>
                 <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
                     <li class="m-nav__item m-nav__item--home">
@@ -21,7 +21,7 @@
                     <li class="m-nav__item">
                         <a href="" class="m-nav__link">
                             <span class="m-nav__link-text">
-                                Incident
+                                Request
                             </span>
                         </a>
                     </li>
@@ -107,7 +107,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Data Incident
+                            Data Request
                         </h3>
                     </div>
                 </div>
@@ -208,7 +208,7 @@
                                 <span>
                                     <i class="la la-plus"></i>
                                     <span>
-                                        New Incident
+                                        New Request
                                     </span>
                                 </span>
                             </a>
@@ -218,29 +218,17 @@
                 </div>
                 <!--end: Search Form -->
                 <!--begin: Datatable -->
-                <table class="table table-striped table-hover responsive" width="100%" id="dtincident">
+                <table class="table table-striped table-hover" width="100%" id="dtincident">
                     <thead>
                         <tr>
                             <th title="Field #1">
-                                Incident ID
+                                Request ID
                             </th>
                             <th title="Field #2">
-                                Incident
+                                Title
                             </th>
                             <th title="Field #3">
-                                Location
-                            </th>
-                            <th title="Field #4">
-                                User
-                            </th>
-                            <th title="Field #5">
-                                Contact
-                            </th>
-                            <th title="Field #6">
-                                Stage
-                            </th>
-                            <th title="Field #7">
-                                Created at
+                                Business Need
                             </th>
                             <th title="Field #8">
                                 Actions
@@ -276,11 +264,20 @@
                                 You successfully read this important alert message.
                             </div>
                             <div class="form-group">
-                                <label for="incident-text" class="form-control-label">
-                                    Incident:
+                                <label for="title" class="form-control-label">
+                                    Title:
                                 </label>
-                                <textarea class="form-control" id="incident-text" name="incident"></textarea>
-                                <span class="m-form__help text-danger" id="helpIncident">
+                                <textarea class="form-control" id="title" name="title"></textarea>
+                                <span class="m-form__help text-danger" id="help_title">
+                                
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label for="business_need" class="form-control-label">
+                                    Business Need:
+                                </label>
+                                <textarea class="form-control" id="title" name="title"></textarea>
+                                <span class="m-form__help text-danger" id="help_title">
                                 
                                 </span>
                             </div>
@@ -360,188 +357,5 @@
 </div>
 @endsection
 @push('scripts')
-    <script>
-        var table = '';
-        function resetForm(){
-            $("#incident-text").val('');
-            $("#location-name").val('');
-            $("#phone-name").val('');
-            $(".detach").detach();
-            $("#file2").val('');
-        }
-
-        function resetMessage(){
-            $("#helpIncident").html('');
-            $("#helpLocation").html('');
-            $("#helpPhone").html(''); 
-        }
-
-        function resetAll(){
-            resetMessage();
-            resetForm();
-        }
-
-        function delete_attachment(sys, id = null){
-            if(confirm('Delete Attachment ?')){
-                $.ajax({
-                    type:"POST",
-                    url:"{{ url('incident/delete_attachment') }}",
-                    data:{
-                        id:id,
-                        _token: "{{csrf_token()}}"
-                    }
-                    
-                })
-                .done(function(data){
-                    $("#alertSuccess").html(data);
-                    $("#alertSuccess").css({'display':'block'});
-                    $(sys).parent().parent().remove();
-                })
-                .fail(function(){
-                    
-                });
-            }        
-        }
-
-        $(function(){
-            $("#newIncident").click(function(){
-                resetAll();
-            });
-
-            $("#addAttachment").click(function(){
-                $("#detail").append(
-                    '<div class="form-group attachment detach">'+
-                        '<div class="input-group">'+
-                            '<input type="file" class="form-control" name="files[]">'+                                        
-                            '<span class="input-group-btn">'+
-                                '<button class="btn btn-danger btn-lg remove" type="button">-</button>'+
-                            '</span>'+
-                        '</div>'+
-                    '</div>'
-                );
-            });
-
-            $("body").on("click",".remove",function(){
-                $(this).parents(".attachment").remove();
-            });
-
-            table = $('#dtincident').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ url('incident/data') }}",
-                    type: "POST",
-                    dataType: "JSON",
-                    data:{ _token: "{{csrf_token()}}"}
-                },
-                columns: [
-                        {data:'id', name:'id'},
-                        {data:'text', name:'text'},
-                        {data:'location', name:'location'},
-                        {data:'user.name', name:'user.name'},
-                        {data:'phone', name:'phone'},
-                        {data:'stage.text', name:'stage.text'},
-                        {data:'created_at', name:'created_at'},
-                        {data:'id', render: function(d){
-                            return '<div class="btn btn-group"><button class="btn btn-sm btn-primary" onclick="edit('+d+')"><i class="fa fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleted('+d+')"><i class="fa fa-trash"></i></button></div>';
-                        }}
-                    ],
-            });
-
-           $("#formincident").submit(function(event){
-                event.preventDefault();
-                let url = $(this).attr('action');
-                let method = $(this).attr('method');
-                let enctype = $(this).attr('enctype');
-                let data = new FormData(this);
-
-                $.ajax({
-                    type:method,
-                    url:url,
-                    enctype:enctype,
-                    processData:false,
-                    contentType:false,
-                    cache:false,
-                    data:data,
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                        resetMessage();
-                    }
-                })
-                .fail(function(data){
-                    if(data.responseJSON.errors.incident){
-                        $("#helpIncident").html(data.responseJSON.errors.incident);
-                    }
-                    if(data.responseJSON.errors.location){
-                        $("#helpLocation").html(data.responseJSON.errors.location);
-                    }
-                    if(data.responseJSON.errors.phone){
-                        $("#helpPhone").html(data.responseJSON.errors.phone); 
-                    } 
-                    $("#alertSuccess").html('');
-                    $("#alertSuccess").css({'display':'none'});                                    
-                })
-                .done(function(data){
-                    $("#alertSuccess").html(data);
-                    $("#alertSuccess").css({'display':'block'});
-                    resetForm();  
-                    table.ajax.reload();
-                });
-            });
-        });
-
-        function edit(id=null){
-            $.ajax({
-                    type:"GET",
-                    url:"{{ url('incident/edit') }}",
-                    cache:false,
-                    data:{
-                        id:id
-                    },
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                
-                    }
-                })
-                .fail(function(data){
-                                                      
-                })
-                .done(function(data){
-                    $("#idmodal_edit").html(data);
-                    $("#m_modal_5").modal();
-                });
-        }
-
-        function deleted(id=null){
-            if(confirm('Hapus ?')){
-                $.ajax({
-                    type:"POST",
-                    url:"{{ url('incident/delete') }}",
-                    cache:false,
-                    data:{
-                        id:id
-                    },
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                
-                    }
-                })
-                .fail(function(data){
-                    $("#content-alert").html('');
-                    $("#head-alert").css({'display':'none'});                                  
-                })
-                .done(function(data){
-                    $("#content-alert").html(data);
-                    $("#head-alert").css({'display':'block'});
-                    table.ajax.reload();  
-                });
-            }
-        }        
-    </script>
+    
 @endpush
