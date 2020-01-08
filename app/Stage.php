@@ -12,4 +12,9 @@ class Stage extends Model
     {
         return $this->hasMany('App\Incident');
     }
+
+    public function requestsApps()
+    {
+        return $this->hasMany('App\Request');
+    }
 }

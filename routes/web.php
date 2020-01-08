@@ -44,6 +44,12 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('request.index');
         Route::get('/data','RequestController@data')
             ->name('request.data');
+        Route::post('/store','RequestController@store')
+            ->name('request.store');
+        Route::get('/edit','RequestController@edit')
+            ->name('request.edit');
+        Route::post('/update','RequestController@update')
+            ->name('request.update');
     });
 });
 

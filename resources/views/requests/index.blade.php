@@ -248,7 +248,7 @@
             <div class="modal-content">
                 <div class="modal-header btn-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Incident
+                        Form Request Application
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -257,10 +257,10 @@
                     </button>
                 </div>
                 <div id="idmodal-content">
-                    <form id="formincident" action="{{ route('incident.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="form_request" action="{{ route('request.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
-                            <div class="alert alert-success" role="alert" style="display:none;" id="alertSuccess">
+                            <div class="alert alert-success" role="alert" style="display:none;" id="alert_success">
                                 You successfully read this important alert message.
                             </div>
                             <div class="form-group">
@@ -276,8 +276,26 @@
                                 <label for="business_need" class="form-control-label">
                                     Business Need:
                                 </label>
-                                <textarea class="form-control" id="title" name="title"></textarea>
-                                <span class="m-form__help text-danger" id="help_title">
+                                <textarea class="form-control" id="business_need" name="business_need"></textarea>
+                                <span class="m-form__help text-danger" id="help_business_need">
+                                
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label for="business_requirment" class="form-control-label">
+                                    Business Requirment:
+                                </label>
+                                <textarea class="form-control" id="business_requirment" name="business_requirment"></textarea>
+                                <span class="m-form__help text-danger" id="help_business_requirment">
+                                
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label for="business_value" class="form-control-label">
+                                    Business Value:
+                                </label>
+                                <textarea class="form-control" id="business_value" name="business_value"></textarea>
+                                <span class="m-form__help text-danger" id="help_business_value">
                                 
                                 </span>
                             </div>
@@ -286,7 +304,7 @@
                                     Location:
                                 </label>
                                 <input type="text" class="form-control" id="location-name" name="location">
-                                <span class="m-form__help text-danger" id="helpLocation">
+                                <span class="m-form__help text-danger" id="help_ocation">
                                     
                                 </span>
                             </div>
@@ -295,7 +313,7 @@
                                     Phone:
                                 </label>
                                 <input type="text" class="form-control" id="phone-name" name="phone">
-                                <span class="m-form__help text-danger" id="helpPhone">
+                                <span class="m-form__help text-danger" id="help_phone">
                                     
                                 </span>
                             </div>
@@ -310,7 +328,7 @@
                                 </label>
                                 <div class="form-group">
                                     <div class="input-group ">
-                                        <input type="file" id="file2" class="form-control" name="files[]" id>
+                                        <input type="file" id="file2" class="form-control" name="files[]">
                                         
                                         <span class="input-group-btn">
                                             <button class="btn btn-danger btn-lg" type="button">
@@ -357,5 +375,98 @@
 </div>
 @endsection
 @push('scripts')
-    
+    <script>
+        function resetAlert(){
+            $("#help_title").('');
+            $("#help_business_need").('');
+            $("#help_business_requirment").('');
+            $("#help_business_value").('');
+            $("#help_location").('');
+            $("#help_phone").('');
+        }
+
+        function resetForm(){
+            $("#title").val('');
+            $("#business_need").val('');
+            $("#business_requirment").val('');
+            $("#business_value").val('');
+            $("#location").val('');
+            $("#phone").val('');
+            $(".detach").detach();
+            $("#file2").val('');
+        }
+
+        function resetAll()
+        {
+            resetAlert();
+            resetForm();
+        }
+
+        $(function(){
+            $("#addAttachment").click(function(){
+                $("#detail").append(
+                    '<div class="form-group attachment detach">'+
+                        '<div class="input-group">'+
+                            '<input type="file" class="form-control" name="files[]">'+                                        
+                            '<span class="input-group-btn">'+
+                                '<button class="btn btn-danger btn-lg remove" type="button">-</button>'+
+                            '</span>'+
+                        '</div>'+
+                    '</div>'
+                );
+            });
+
+            $("body").on("click",".remove",function(){
+                $(this).parents(".attachment").remove();
+            });
+
+            $("#form_request").submit(function(event){
+                event.preventDefault();
+                let url = $(this).attr('action');
+                let type = $(this).attr('method');
+                let enctype = $(this).attr('enctype');
+                let data = new FormData(this);
+
+                $.ajax({
+                    url:url,
+                    type:type,
+                    enctype:enctype,
+                    processData:false,
+                    contentType:false,
+                    cache:false,
+                    data:data,
+                    headers: {
+                        'X-CSRF-TOKEN':$('#token').attr('token')
+                    }
+                })
+                .fail(function(){
+                    if(data.responseJSON.errors.title){
+                        $("#help_title").html(data.responseJSON.errors.title);
+                    }
+                    if(data.responseJSON.errors.business_need){
+                        $("#help_business_need").html(data.responseJSON.errors.business_need)
+                    }
+                    if(data.responseJSON.errors.business_requirment){
+                        $("#help_business_requirment").html(data.responseJSON.errors.business_requirment)
+                    }
+                    if(data.responseJSON.errors.business_value){
+                        $("#help_business_value").html(data.responseJSON.errors.business_value);
+                    }
+                    if(data.responseJSON.errors.location){
+                        $("#help_location").html(data.responseJSON.errors.location);
+                    }
+                    if(data.responseJSON.errors.phone){
+                        $("#help_phone").html(data.responseJSON.errors.phone);
+                    }
+                    $("#alert_success").html('');
+                    $("#alert_success").css({'display':'none'});
+                })
+                .done(function(){
+                    $("#alert_success").html('');
+                    $("#alert_success").css({'display':'block'});
+                    resetAll();
+                });
+            });
+        });
+    </script>
 @endpush
