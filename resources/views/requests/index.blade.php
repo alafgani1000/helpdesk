@@ -218,7 +218,7 @@
                 </div>
                 <!--end: Search Form -->
                 <!--begin: Datatable -->
-                <table class="table table-striped table-hover" width="100%" id="dtincident">
+                <table class="table table-striped table-hover" width="100%" id="dtrequest">
                     <thead>
                         <tr>
                             <th title="Field #1">
@@ -376,6 +376,7 @@
 @endsection
 @push('scripts')
     <script>
+        var table='';
         function resetAlert(){
             $("#help_title").('');
             $("#help_business_need").('');
@@ -403,6 +404,28 @@
         }
 
         $(function(){
+            $("#dtrequest").DataTable({
+                processing:true,
+                serverSide:true,
+                ajax:{
+                    url:"{{ route('request.data') }}",
+                    type:"POST",
+                    dataType:"JSON",
+                    data:{
+                        "_token":"{{csrf_token()}}"
+                    }
+                },
+                columns:[
+                    {data:'id', name:'id'},
+                    {data:'title', name:'title'},
+                    {data:'business_need', name:'business_need'},
+                    {data:'id', render:function(data){
+                            '<button class="btn btn-danger btn-sm"></button>'
+                        }
+                    }
+                ]
+            });
+
             $("#addAttachment").click(function(){
                 $("#detail").append(
                     '<div class="form-group attachment detach">'+
