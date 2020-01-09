@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('request.edit');
         Route::post('/update','RequestController@update')
             ->name('request.update');
+        Route::post('/delete','RequestController@delete')
+            ->name('request.delete');
     });
 });
 

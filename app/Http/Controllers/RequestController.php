@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Request as RequestApp;
+use App\RequestAttachment;
 use Carbon\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
 {
@@ -35,9 +37,11 @@ class RequestController extends Controller
             'title' => $request->title,
             'business_need' => $request->business_need,
             'business_requirment' => $request->business_requirment,
-            'busniness_value' => $request->business_value,
+            'business_value' => $request->business_value,
             'location' => $request->location,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'user_id' => Auth::user()->id,
+            'stage_id' => 1
         ]);
 
         // insert incedent data attachment 
@@ -53,8 +57,8 @@ class RequestController extends Controller
                 // upload data
                 $item = $files->storeAs('files', $filename);
                 // input data file
-                $requestApp->incidentAttachments()->save(
-                    new IncidentAttachment([
+                $requestApp->requestAttachments()->save(
+                    new RequestAttachment([
                         'file_name' => $filename, 
                         'file_location' => $item, 
                         'alias' => $name
@@ -62,6 +66,8 @@ class RequestController extends Controller
                 );
             }
         }
+
+        return 'Input success';
 
     }
 
@@ -116,7 +122,7 @@ class RequestController extends Controller
 
     public function delete(Request $request)
     {
-        $requestApp = RequestApp::find($request->id)->destroy();
+        $requestApp = RequestApp::find($request->id)->delete();
         $reqAttachment = RequestAttachment::where('request_id',$request->id)->delete();
 
         return 'Delete Success';

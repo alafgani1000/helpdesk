@@ -94,7 +94,7 @@
     </div>
     <!-- END: Subheader -->
     <div class="m-content">
-        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-20 alert-success" role="alert" id="head-alert" style="display:none">
+        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-20 alert-success" role="alert" id="request_alert" style="display:none">
             <div class="m-alert__icon">
                 <i class="flaticon-exclamation m--font-brand"></i>
             </div>
@@ -378,12 +378,12 @@
     <script>
         var table='';
         function resetAlert(){
-            $("#help_title").('');
-            $("#help_business_need").('');
-            $("#help_business_requirment").('');
-            $("#help_business_value").('');
-            $("#help_location").('');
-            $("#help_phone").('');
+            $("#help_title").html('');
+            $("#help_business_need").html('');
+            $("#help_business_requirment").html('');
+            $("#help_business_value").html('');
+            $("#help_location").html('');
+            $("#help_phone").html('');
         }
 
         function resetForm(){
@@ -409,7 +409,7 @@
                 serverSide:true,
                 ajax:{
                     url:"{{ route('request.data') }}",
-                    type:"POST",
+                    type:"GET",
                     dataType:"JSON",
                     data:{
                         "_token":"{{csrf_token()}}"
@@ -419,11 +419,37 @@
                     {data:'id', name:'id'},
                     {data:'title', name:'title'},
                     {data:'business_need', name:'business_need'},
-                    {data:'id', render:function(data){
-                            '<button class="btn btn-danger btn-sm"></button>'
+                    {data:'id', render:function(data){ 
+                        return'<div class="btn-group"><button class="btn btn-warning btn-sm"><i class="fa fa-edit text-white"></i></button>'+
+                        '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button></div>'
                         }
                     }
                 ]
+            });
+
+            $("body").on('click','.deleted',function(event){
+                let id_request = $(this).attr('dataid');
+                let url = "{{ route('request.delete') }}";
+                if(alert('Delete ?')){
+                    $.ajax({
+                    url:url,
+                    type:"POST",
+                    dataType:"JSON",
+                    data:{
+                        id:id_request,
+                        _token:"{{csrf_token()}}"
+                    }
+                    })
+                    .fail(function(data){
+                        $("#request_alert").html(data);
+                        $("#request_alert").css({'display':'block'});
+                    })
+                    .done(function(){
+                        $("#request_alert").html(data);
+                        $("#request_alert").css({'display':'block'});
+                        table.ajax.reload();
+                    });
+                }            
             });
 
             $("#addAttachment").click(function(){
