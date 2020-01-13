@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestAttachment extends Model
 {
-    protected $fillable = ['file_name','file_location','request_id'];
+    protected $fillable = ['file_name','file_location','alias','request_id'];
 
     public function request()
     {

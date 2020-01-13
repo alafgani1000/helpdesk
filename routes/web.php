@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('request.update');
         Route::post('/delete','RequestController@delete')
             ->name('request.delete');
+        Route::post('/delete_detail','RequestController@')
+            ->name('request.delete_detail');
     });
 });
 

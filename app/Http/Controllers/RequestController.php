@@ -71,9 +71,10 @@ class RequestController extends Controller
 
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('incidents.edit');
+        $request = RequestApp::find($request->id);
+        return view('requests.edit', compact('request'));
     }
 
     public function update()

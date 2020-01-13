@@ -243,6 +243,8 @@
             </div>
         </div>
     </div>
+
+    {{-- modal create --}}
     <div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -352,6 +354,7 @@
             </div>
         </div>
     </div>
+    {{-- end modal edit --}}
 
     <div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -366,7 +369,7 @@
                         </span>
                     </button>
                 </div>
-                <div id="idmodal_edit">
+                <div id="id_modal_edit">
                     
                 </div>
             </div>
@@ -376,7 +379,7 @@
 @endsection
 @push('scripts')
     <script>
-        var table='';
+        var table ='';
         function resetAlert(){
             $("#help_title").html('');
             $("#help_business_need").html('');
@@ -404,7 +407,7 @@
         }
 
         $(function(){
-            $("#dtrequest").DataTable({
+            table = $("#dtrequest").DataTable({
                 processing:true,
                 serverSide:true,
                 ajax:{
@@ -420,36 +423,29 @@
                     {data:'title', name:'title'},
                     {data:'business_need', name:'business_need'},
                     {data:'id', render:function(data){ 
-                        return'<div class="btn-group"><button class="btn btn-warning btn-sm"><i class="fa fa-edit text-white"></i></button>'+
+                        return'<div class="btn-group"><button class="btn btn-warning btn-sm edited" dataid=\''+data+'\'><i class="fa fa-edit text-white"></i></button>'+
                         '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button></div>'
                         }
                     }
                 ]
             });
 
-            $("body").on('click','.deleted',function(event){
-                let id_request = $(this).attr('dataid');
-                let url = "{{ route('request.delete') }}";
-                if(alert('Delete ?')){
-                    $.ajax({
+            $("body").on('click','.edited',function(event){
+                let id = $(this).attr('dataid');
+                let url = "{{ route('request.edit') }}";
+                $.ajax({
                     url:url,
-                    type:"POST",
-                    dataType:"JSON",
-                    data:{
-                        id:id_request,
+                    type:"GET",
+                    cache:false,
+                    data: {
+                        id:id,
                         _token:"{{csrf_token()}}"
                     }
-                    })
-                    .fail(function(data){
-                        $("#request_alert").html(data);
-                        $("#request_alert").css({'display':'block'});
-                    })
-                    .done(function(){
-                        $("#request_alert").html(data);
-                        $("#request_alert").css({'display':'block'});
-                        table.ajax.reload();
-                    });
-                }            
+                })
+                .done(function(data){
+                    $("#id_modal_edit").html(data);
+                    $("#m_modal_5").modal();
+                });
             });
 
             $("#addAttachment").click(function(){
@@ -510,11 +506,38 @@
                     $("#alert_success").html('');
                     $("#alert_success").css({'display':'none'});
                 })
-                .done(function(){
-                    $("#alert_success").html('');
+                .done(function(data){
+                    $("#alert_success").html(data);
                     $("#alert_success").css({'display':'block'});
-                    resetAll();
+                    resetForm();
+                    table.ajax.reload();
                 });
+            });
+
+            $("body").on('click','.deleted',function(event){
+                let id_request = $(this).attr('dataid');
+                let url = "{{ route('request.delete') }}";
+                if(confirm('Delete ?')){
+                    $.ajax({
+                    url:url,
+                    type:"POST",
+                    data:{
+                        id:id_request,
+                    },
+                    headers:{
+                        'X-CSRF-TOKEN':$('#token').attr('content')
+                    },
+                    })
+                    .fail(function(data){
+                        $("#content-alert").html(data);
+                        $("#request_alert").css({'display':'block'});
+                    })
+                    .done(function(data){
+                        $("#content-alert").html(data);
+                        $("#request_alert").css({'display':'block'});
+                        table.ajax.reload();
+                    });
+                }            
             });
         });
     </script>
