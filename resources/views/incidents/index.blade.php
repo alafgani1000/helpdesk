@@ -240,9 +240,15 @@
                                 Stage
                             </th>
                             <th title="Field #7">
-                                Created at
+                                Resolve Text
                             </th>
                             <th title="Field #8">
+                                Resolve date
+                            </th>
+                            <th title="Field #9">
+                                Created at
+                            </th>
+                            <th title="Field #10">
                                 Actions
                             </th>
                         </tr>
@@ -343,7 +349,7 @@
             <div class="modal-content">
                 <div class="modal-header btn-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Incident
+                        Form Edit Incident
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -352,6 +358,26 @@
                     </button>
                 </div>
                 <div id="idmodal_edit">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="m_modal_resolve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
+                        Form Resolve
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </div>
+                <div id="id_modal_resolve">
                     
                 </div>
             </div>
@@ -441,9 +467,11 @@
                         {data:'user.name', name:'user.name'},
                         {data:'phone', name:'phone'},
                         {data:'stage.text', name:'stage.text'},
+                        {data:'resolve_text', name:'resolve_text'},
+                        {data:'resolve_date', name:'resolve_date'},
                         {data:'created_at', name:'created_at'},
                         {data:'id', render: function(d){
-                            return '<div class="btn btn-group"><button class="btn btn-sm btn-primary" onclick="edit('+d+')"><i class="fa fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleted('+d+')"><i class="fa fa-trash"></i></button></div>';
+                            return '<div class="btn btn-group"><button class="btn btn-sm btn-primary" onclick="edit('+d+')"><i class="fa fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleted('+d+')"><i class="fa fa-trash"></i></button><button class="btn btn-sm btn-success" onclick="view_resolve('+d+')"><i class="fa fa-check"></i></button></div>';
                         }}
                     ],
             });
@@ -517,7 +545,7 @@
         }
 
         function deleted(id=null){
-            if(confirm('Hapus ?')){
+            if(confirm('Delete ?')){
                 $.ajax({
                     type:"POST",
                     url:"{{ url('incident/delete') }}",
@@ -543,5 +571,28 @@
                 });
             }
         }        
+
+        function view_resolve(id=null){
+            if(confirm('Resolve ?')){
+                $.ajax({
+                    type:"GET",
+                    url:"{{ url('incident/resolve') }}",
+                    cache:false,
+                    data:{
+                        id:id
+                    },
+                    headers:{
+                        'X-CSRF-TOKEN':$("#token").attr("content")
+                    }
+                })
+                .fail(function(data){
+                    $("#resolve_head_alert").css({'display':'none'});
+                })
+                .done(function(data){
+                    $("#id_modal_resolve").html(data);
+                    $("#m_modal_resolve").modal();
+                });
+            }
+        }
     </script>
 @endpush

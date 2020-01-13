@@ -36,6 +36,10 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('incident.delete_attachment');
         Route::post('/update','IncidentAttachment@update')
             ->name('incident.update');
+        Route::get('/resolve','IncidentController@viewResolve')
+            ->name('incident.view_resolve');
+        Route::post('/resolve','IncidentController@resolve')
+            ->name('incident.resolve');
     });
 
     // route request

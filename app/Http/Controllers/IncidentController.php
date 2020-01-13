@@ -128,4 +128,26 @@ class IncidentController extends Controller
 
         return "Incident berhasil dihapus.";
     }
+
+    public function viewResolve(Request $request)
+    {
+        $incident = Incident::find($request->id);
+        return view('incidents.resolve', compact('incident'));
+    }
+
+    public function resolve(Request $request)
+    {
+        $request->validate([
+            'resolve_text' => 'required',
+            'resolve_date' => 'required'
+        ]);
+
+        Incident::where('id',$request->id_incident)->update([
+            'resolve_text' => $request->resolve_text,
+            'resolve_date' => $request->resolve_date,
+            'stage_id' => 2
+        ]);
+
+        return "Resolve Success";
+    }
 }
