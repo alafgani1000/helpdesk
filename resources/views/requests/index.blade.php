@@ -375,6 +375,26 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="m_modal_6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header btn-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
+                        Detail Request
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </div>
+                <div id="id_modal_detail">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @push('scripts')
@@ -424,7 +444,7 @@
                     {data:'business_need', name:'business_need'},
                     {data:'id', render:function(data){ 
                         return'<div class="btn-group"><button class="btn btn-warning btn-sm edited" dataid=\''+data+'\'><i class="fa fa-edit text-white"></i></button>'+
-                        '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button></div>'
+                        '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button><button class="btn btn-success btn-sm detail" dataid=\''+data+'\'><i class="fa fa-window-restore"></i></button></div>'
                         }
                     }
                 ]
@@ -446,6 +466,24 @@
                     $("#id_modal_edit").html(data);
                     $("#m_modal_5").modal();
                 });
+            });
+
+            $("body").on('click','.detail',function(event){
+                let id = $(this).attr('dataid');
+                let url = "{{ route('request.detail') }}";
+                $.ajax({
+                    url:url,
+                    type:"GET",
+                    cache:false,
+                    data: {
+                        id:id,
+                        _token:"{{csrf_token()}}"
+                    }
+                })
+                .done(function(data){
+                    $("#id_modal_detail").html(data);
+                    $("#m_modal_6").modal();
+                })
             });
 
             $("#addAttachment").click(function(){

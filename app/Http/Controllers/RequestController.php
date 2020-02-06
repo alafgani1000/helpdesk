@@ -77,6 +77,12 @@ class RequestController extends Controller
         return view('requests.edit', compact('request'));
     }
 
+    public function detail(Request $request)
+    {
+        $request = RequestApp::find($request->id);
+        return view('requests.detail', compact('request'));
+    }
+
     public function update()
     {
         $request->validate([
