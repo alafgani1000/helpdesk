@@ -1146,7 +1146,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								<a  href="#" class="m-menu__link m-menu__toggle">
 									<i class="m-menu__link-icon flaticon-interface-3"></i>
 									<span class="m-menu__link-text">
-										General
+										Users
 									</span>
 									<i class="m-menu__ver-arrow la la-angle-right"></i>
 								</a>
@@ -1166,55 +1166,25 @@ License: You must have a valid license purchased only from themeforest(the above
 													<span></span>
 												</i>
 												<span class="m-menu__link-text">
-													Pricing Tables
-												</span>
-												<i class="m-menu__ver-arrow la la-angle-right"></i>
+													Add Users
+												</span>												
 											</a>
-											<div class="m-menu__submenu">
-												<span class="m-menu__arrow"></span>
-												<ul class="m-menu__subnav">
-													<li class="m-menu__item " aria-haspopup="true" >
-														<a  href="snippets/general/pricing-tables/pricing-table-1.html" class="m-menu__link ">
-															<i class="m-menu__link-bullet m-menu__link-bullet--dot">
-																<span></span>
-															</i>
-															<span class="m-menu__link-text">
-																Pricing Tables v1
-															</span>
-														</a>
-													</li>
-													<li class="m-menu__item " aria-haspopup="true" >
-														<a  href="snippets/general/pricing-tables/pricing-table-2.html" class="m-menu__link ">
-															<i class="m-menu__link-bullet m-menu__link-bullet--dot">
-																<span></span>
-															</i>
-															<span class="m-menu__link-text">
-																Pricing Tables v2
-															</span>
-														</a>
-													</li>
-													<li class="m-menu__item " aria-haspopup="true" >
-														<a  href="snippets/general/pricing-tables/pricing-table-3.html" class="m-menu__link ">
-															<i class="m-menu__link-bullet m-menu__link-bullet--dot">
-																<span></span>
-															</i>
-															<span class="m-menu__link-text">
-																Pricing Tables v3
-															</span>
-														</a>
-													</li>
-													<li class="m-menu__item " aria-haspopup="true" >
-														<a  href="snippets/general/pricing-tables/pricing-table-4.html" class="m-menu__link ">
-															<i class="m-menu__link-bullet m-menu__link-bullet--dot">
-																<span></span>
-															</i>
-															<span class="m-menu__link-text">
-																Pricing Tables v4
-															</span>
-														</a>
-													</li>
-												</ul>
-											</div>
+											<a  href="#" class="m-menu__link m-menu__toggle">
+												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
+													<span></span>
+												</i>
+												<span class="m-menu__link-text">
+													Add Teams
+												</span>												
+											</a>
+											<a  href="#" class="m-menu__link m-menu__toggle">
+												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
+													<span></span>
+												</i>
+												<span class="m-menu__link-text">
+													Add Category
+												</span>												
+											</a>
 										</li>
 									</ul>
 								</div>

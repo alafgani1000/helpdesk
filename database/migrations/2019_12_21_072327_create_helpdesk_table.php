@@ -39,7 +39,7 @@ class CreateHelpdeskTable extends Migration
             $table->longText('business_value');
             $table->string('user_key');
             $table->string('stage_id');
-            $table->date('resolve_date');
+            $table->dateTime('resolve_date');
             $table->timestamps();
         });
         

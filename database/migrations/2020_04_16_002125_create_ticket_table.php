@@ -31,7 +31,7 @@ class CreateTicketTable extends Migration
         schema::create('user_teams', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->string('name');
+            $table->integer('team_id');
             $table->timestamps();
         });
 
@@ -52,5 +52,8 @@ class CreateTicketTable extends Migration
     public function down()
     {
         Schema::dropIfExists('ticket');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('teams');
+        Schema::dropIfExists('user_teams');
     }
 }
