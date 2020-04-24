@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use DataTables;
 use App\User;
@@ -17,7 +18,7 @@ class UserController extends Controller
 
     public function data()
     {
-        $users = DataTables(Incident::all())->toJson();
+        $users = DataTables(User::all())->toJson();
         return $users;
     }
 
@@ -31,13 +32,14 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'repassword' => 'required'
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->location,
+            'password' => Hash::make($request->password),
         ]);
 
         return 'User berhasil dibuat';
@@ -54,15 +56,24 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'repassword' => 'required'
         ]);
 
-        $incident = User::where('id',$request->id)->update([
+        $user = User::where('id',$request->id)->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password
+            'password' => Hash::make($request->password)
         ]);
 
-        return 'User berhasil diupdate';
+        return 'User berhasil diubah';
+    }
+
+    public function destroy(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->delete();
+
+        return 'User berhasil dihapus';
     }
 }

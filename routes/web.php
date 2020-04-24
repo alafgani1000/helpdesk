@@ -61,5 +61,18 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/detail','RequestController@detail')
             ->name('request.detail');
     });
+
+    Route::group(['prefix' => 'user'], function(){
+        Route::get('','UserController@index')
+            ->name('user.index');
+        Route::get('/data','UserController@data')
+            ->name('user.data');
+        Route::post('/store','UserController@store')
+            ->name('user.store');
+        Route::get('/edit','UserController@edit')
+            ->name('user.edit');
+        Route::post('/update','UserController@update')
+            ->name('user.update');
+    });
 });
 
