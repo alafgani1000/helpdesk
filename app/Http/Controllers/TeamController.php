@@ -45,17 +45,25 @@ class TeamController extends Controller
         return view('teams.edit', compact('team'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required'
         ]);
 
-        $team = Team::where('id', $request->id)->update([
+        $team = Team::where('id', $id)->update([
             'name' => $request->name
         ]);
 
         return 'Nama Tim berhasil dirubah';
+    }
+
+    public function destroy(Request $request)
+    {
+        $team = Team::find($request->id);
+        $team->delete();
+
+        return 'Data berhasil dihapus';
     }
 
     public function asignUserToTeam(Request $request)

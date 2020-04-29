@@ -71,8 +71,25 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('user.store');
         Route::get('/edit','UserController@edit')
             ->name('user.edit');
-        Route::post('/update','UserController@update')
+        Route::post('/update/{id}','UserController@update')
             ->name('user.update');
+        Route::post('/delete','UserController@destroy')
+            ->name('user.delete');
+    });
+
+    Route::group(['prefix' => 'team'], function(){
+        Route::get('','TeamController@index')
+            ->name('team.index');
+        Route::get('/data','TeamController@data')
+            ->name('team.data');
+        Route::post('/store','TeamController@store')
+            ->name('team.store');
+        Route::get('/edit','TeamController@edit')
+            ->name('team.edit');
+        Route::post('/update/{id}','TeamController@update')
+            ->name('team.update');
+        Route::post('/delete','TeamController@destroy')
+            ->name('team.delete');
     });
 });
 

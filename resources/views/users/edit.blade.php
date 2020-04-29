@@ -1,4 +1,4 @@
-<form id="form-edit-user" action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data">
+<form id="form-edit-user" action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="modal-body">
         <div class="alert alert-success" role="alert" style="display:none;" id="edit_alert_success">
@@ -8,7 +8,7 @@
             <label for="user-name" class="form-control-label">
                 Name:
             </label>
-            <input type="text" class="form-control" id="name" name="name">
+            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
             <span class="m-form__help text-danger" id="help-name">
             
             </span>
@@ -17,29 +17,11 @@
             <label for="user-email" class="form-control-label">
                 Email:
             </label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
             <span class="m-form__help text-danger" id="help-email">
                 
             </span>
         </div>
-        <div class="form-group">
-            <label for="user-password" class="form-control-label">
-                Password:
-            </label>
-            <input type="password" class="form-control" id="password" name="password">
-            <span class="m-form__help text-danger" id="help-password">
-                
-            </span>
-        </div>
-        <div class="form-group">
-            <label for="user-repassword" class="form-control-label">
-                Re password:
-            </label>
-            <input type="password" class="form-control" id="repassword" name="repassword">
-            <span class="m-form__help text-danger" id="help-repassword">
-                
-            </span>
-        </div>                  
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -52,26 +34,6 @@
 </form>
 <script>
     $(function(){
-        $("body").on('click','.delete-detail',function(event){
-            let id = $(this).attr('dataid');
-            let url = "{{ route('request.delete_detail') }}";
-            if(confirm('Delete ?')){
-                $.ajax({
-                    url:url,
-                    type:"POST",
-                    dataType:"JSON",
-                    data:{
-                        id:id,
-                        _token:"{{csrf_token()}}"
-                    }
-                })
-                .done(function(data){
-                    $("#edit_alert_success").html(data);
-                    $(this).parents().parents().remove();
-                });
-            }
-        });
-
         $("#edit_addAttachment").click(function(){
             $("#edit_detail").append(
                 '<div class="form-group attachment detach">'+
@@ -83,6 +45,49 @@
                     '</div>'+
                 '</div>'
             );
+        });
+
+        $("#formincident_edit").submit(function(event){
+            event.preventDefault();
+            let url = $(this).attr('action');
+            let method = $(this).attr('method');
+            let enctype = $(this).attr('enctype');
+            let data = new FormData(this);
+
+            $.ajax({
+                type:method,
+                url:url,
+                enctype:enctype,
+                processData:false,
+                contentType:false,
+                cache:false,
+                data:data,
+                headers:{
+                    'X-CSRF-TOKEN':$('#token').attr('content')
+                },
+                beforeSend:function() {
+                    resetMessage();
+                }
+            })
+            .fail(function(data){
+                if(data.responseJSON.errors.incident){
+                    $("#helpIncident").html(data.responseJSON.errors.incident);
+                }
+                if(data.responseJSON.errors.location){
+                    $("#helpLocation").html(data.responseJSON.errors.location);
+                }
+                if(data.responseJSON.errors.phone){
+                    $("#helpPhone").html(data.responseJSON.errors.phone); 
+                } 
+                $("#alertSuccess").html('');
+                $("#alertSuccess").css({'display':'none'});                                    
+            })
+            .done(function(data){
+                $("#alertSuccess").html(data);
+                $("#alertSuccess").css({'display':'block'});
+                resetForm();  
+                table.ajax.reload();
+            });
         });
 
         $("body").on("click",".remove",function(){

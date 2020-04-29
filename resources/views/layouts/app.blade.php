@@ -1169,7 +1169,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													Add Users
 												</span>												
 											</a>
-											<a  href="#" class="m-menu__link m-menu__toggle">
+											<a  href="{{ route('team.index') }}" class="m-menu__link m-menu__toggle">
 												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
 													<span></span>
 												</i>

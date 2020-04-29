@@ -56,20 +56,17 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required',
-            'repassword' => 'required'
         ]);
-
+        
         $user = User::where('id',$request->id)->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
         ]);
 
         return 'User berhasil diubah';
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
         $user = User::find($request->id);
         $user->delete();
