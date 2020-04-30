@@ -409,7 +409,7 @@
 
             $("body").on('click','.edited',function(event){
                 let id = $(this).attr('dataid');
-                let url = "{{ route('team.edit') }}";
+                let url = "{{ route('cat.edit') }}";
                 $.ajax({
                     url:url,
                     type:"GET",
@@ -470,7 +470,7 @@
 
             $("body").on('click','.deleted',function(event){
                 let id_request = $(this).attr('dataid');
-                let url = "{{ route('team.delete') }}";
+                let url = "{{ route('cat.delete') }}";
                 if(confirm('Delete ?')){
                     $.ajax({
                     url:url,

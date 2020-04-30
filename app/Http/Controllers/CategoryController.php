@@ -68,4 +68,12 @@ class CategoryController extends Controller
 
         return 'Kategori berhasil diupdate';
     }
+
+    public function destroy(Request $request)
+    {
+        $category = Category::find($request->id);
+        $category->delete();
+
+        return 'Berhasil dihapus.';
+    }
 }

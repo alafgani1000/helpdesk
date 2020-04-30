@@ -106,6 +106,12 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('cat.data');
         Route::post('/store','CategoryController@store')
             ->name('cat.store');
+        Route::get('/edit','CategoryController@edit')
+            ->name('cat.edit');
+        Route::post('/update','CategoryController@update')
+            ->name('cat.update');
+        Route::post('/delete','CategoryController@destroy')
+            ->name('cat.delete');
     });
     
 });
