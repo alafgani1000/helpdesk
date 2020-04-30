@@ -59,6 +59,10 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--end::Page Snippets -->
 		<script src="{{ asset('assets/datatables/datatables.min.js') }}" type="text/javascript"></script>
 
+		<!--begin::Page Resources -->
+		<script src="../../../assets/demo/default/custom/components/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
+		<!--end::Page Resources -->
+
 		@stack('scripts')
 	</head>
 	<!-- end::Head -->
@@ -1177,7 +1181,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													Add Teams
 												</span>												
 											</a>
-											<a  href="#" class="m-menu__link m-menu__toggle">
+											<a  href="{{ route('cat.index') }}" class="m-menu__link m-menu__toggle">
 												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
 													<span></span>
 												</i>

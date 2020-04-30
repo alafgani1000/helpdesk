@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('request.detail');
     });
 
+    // route user
     Route::group(['prefix' => 'user'], function(){
         Route::get('','UserController@index')
             ->name('user.index');
@@ -77,6 +78,7 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('user.delete');
     });
 
+    // route team
     Route::group(['prefix' => 'team'], function(){
         Route::get('','TeamController@index')
             ->name('team.index');
@@ -90,6 +92,21 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('team.update');
         Route::post('/delete','TeamController@destroy')
             ->name('team.delete');
+        Route::post('/add/user','TeamController@asignUserToTeam')
+            ->name('team.asign');
+        Route::post('/update/user','TeamController@updateAsignToTeam')
+            ->name('team.unasign');
     });
+
+    // route category
+    Route::group(['prefix' => 'category'], function(){
+        Route::get('','CategoryController@index')
+            ->name('cat.index');
+        Route::get('/data','CategoryController@data')
+            ->name('cat.data');
+        Route::post('/store','CategoryController@store')
+            ->name('cat.store');
+    });
+    
 });
 

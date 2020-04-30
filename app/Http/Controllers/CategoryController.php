@@ -37,8 +37,8 @@ class CategoryController extends Controller
         $category = Category::create([
             'name' => $request->name,
             'time_interval' => $request->time_interval,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date
+            'start_date' => Carbon::parse($request->start_date),
+            'end_date' => Carbon::parse($request->end_date)
         ]);
 
         return 'Kategori berhasil dibuat';

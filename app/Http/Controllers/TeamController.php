@@ -73,7 +73,7 @@ class TeamController extends Controller
             'team_id' => $request->team_id
         ]);
 
-        return 'Crated Success';
+        return 'Created Success';
     }
 
     public function updateAsignToTeam(Request $request)
