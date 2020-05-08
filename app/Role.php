@@ -19,4 +19,9 @@ class Role extends Model
         return $this->belongsToMany('App\Menu');        
     }    
 
+    public function scopeOption($param, $query)
+    {
+        $query->where('id', $param);
+    }
+
 }
