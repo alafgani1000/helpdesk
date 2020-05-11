@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     protected $fillable = ['name'];
+
+    public function userTeam()
+    {
+        return $this->belongsTo('App\UserTeam');
+    }
 }

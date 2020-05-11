@@ -51,6 +51,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Role');
     }
+    
+    public function userTeam()
+    {
+        return $this->hasOne('App\UserTeam');
+    }
 
     public function hasRole($roleName)
     {
