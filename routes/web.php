@@ -113,6 +113,22 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/delete','CategoryController@destroy')
             ->name('cat.delete');
     });
+
+    // route stage
+    Route::group(['prefix' => 'stage'], function(){
+        Route::get('','StageController@index')
+            ->name('stage.index');
+        Route::get('/data','StageController@data')
+            ->name('stage.data');
+        Route::post('/store','StageController@store')
+            ->name('stage.store');
+        Route::get('/edit','StageController@edit')
+            ->name('stage.edit');
+        Route::post('/update','StageController@update')
+            ->name('stage.update');
+        Route::post('/delete','StageController@delete')
+            ->name('stage.delete');
+    });
     
 });
 
