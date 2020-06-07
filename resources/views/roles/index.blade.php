@@ -21,7 +21,7 @@
                     <li class="m-nav__item">
                         <a href="" class="m-nav__link">
                             <span class="m-nav__link-text">
-                                User
+                                Roles
                             </span>
                         </a>
                     </li>
@@ -107,7 +107,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Data User
+                            Master Data Role
                         </h3>
                     </div>
                 </div>
@@ -204,11 +204,11 @@
                             </div>
                         </div>
                         <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                            <a href="#" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill" data-toggle="modal" data-target="#m_modal_4" id="newIncident">
+                            <a href="#" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill" data-toggle="modal" data-target="#m_modal_4" id="new-stage">
                                 <span>
                                     <i class="la la-plus"></i>
                                     <span>
-                                        New Incident
+                                        New Role
                                     </span>
                                 </span>
                             </a>
@@ -218,14 +218,14 @@
                 </div>
                 <!--end: Search Form -->
                 <!--begin: Datatable -->
-                <table class="table table-striped table-hover responsive" width="100%" id="dtuser">
+                <table class="table table-striped table-hover responsive" width="100%" id="dt_role">
                     <thead>
                         <tr>
                             <th title="Field #1">
-                                Name
+                                id
                             </th>
-                            <th title="Field #2">
-                                Email
+                            <th title="Field #1">
+                                Name
                             </th>
                             <th title="Field #3">
                                 Created At
@@ -248,7 +248,7 @@
             <div class="modal-content">
                 <div class="modal-header btn-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Add User
+                        Form create role
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -257,7 +257,7 @@
                     </button>
                 </div>
                 <div id="idmodal-content">
-                    <form id="form-user" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="form-role" action="{{ route('role.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div class="alert alert-success" role="alert" style="display:none;" id="alert-success">
@@ -271,42 +271,14 @@
                                 <span class="m-form__help text-danger" id="help-name">
                                 
                                 </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-email" class="form-control-label">
-                                    Email:
-                                </label>
-                                <input type="email" class="form-control" id="email" name="email">
-                                <span class="m-form__help text-danger" id="help-email">
-                                    
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-password" class="form-control-label">
-                                    Password:
-                                </label>
-                                <input type="password" class="form-control" id="password" name="password">
-                                <span class="m-form__help text-danger" id="help-password">
-                                    
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-repassword" class="form-control-label">
-                                    Re password:
-                                </label>
-                                <input type="password" class="form-control" id="repassword" name="repassword">
-                                <span class="m-form__help text-danger" id="help-repassword">
-                                    
-                                </span>
-                            </div>
-                                               
+                            </div>                                           
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 Close
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                Send
+                                Create
                             </button>
                         </div>
                     </form>
@@ -317,10 +289,13 @@
 
     <div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
+            <div class="alert alert-success" role="alert" style="display:none;" id="edit-alert-success">
+                You successfully read this important alert message.
+            </div>
             <div class="modal-content">
                 <div class="modal-header btn-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Edit User
+                        Form edit stage
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -334,26 +309,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="m_modal_resolve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header btn-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Resolve
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">
-                            &times;
-                        </span>
-                    </button>
-                </div>
-                <div id="id_modal_resolve">
-                    
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 @endsection
 @push('scripts')
@@ -361,16 +316,10 @@
         var table ='';
         function resetAlert(){
             $("#help-name").html('');
-            $("#help-email").html('');
-            $("#help-password").html('');
-            $("#help-repassword").html('');
         }
 
         function resetForm(){
             $("#name").val('');
-            $("#email").val('');
-            $("#password").val('');
-            $("#repassword").val('');
         }
 
         function resetAll()
@@ -380,11 +329,11 @@
         }
 
         $(function(){
-            table = $("#dtuser").DataTable({
+            table = $("#dt_role").DataTable({
                 processing:true,
                 serverSide:true,
                 ajax:{
-                    url:"{{ route('user.data') }}",
+                    url:"{{ route('role.data') }}",
                     type:"GET",
                     dataType:"JSON",
                     data:{
@@ -392,39 +341,24 @@
                     }
                 },
                 columns:[
+                    {data:'id', name:'id'},
                     {data:'name', name:'name'},
-                    {data:'email', name:'email'},
                     {data:'created_at', name:'created_at'},
-                    {data:'id', render:function(data){ 
-                        return'<div class="btn-group"><button class="btn btn-warning btn-sm edited" dataid=\''+data+'\'><i class="fa fa-edit text-white"></i></button>'+
-                        '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button>'+
-                        '<button class="btn btn-success btn-sm roleattach" dataid=\''+data+'\'><i class="fa fa-plus"></i></button></div>'
+                    {data:'id', render:function(data){
+                            return '<div class="btn-group"><button class="btn btn-warning btn-sm edited" dataid=\''+data+'\'><i class="fa fa-edit text-white"></i></button>'+
+                            '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button></div>'
                         }
                     }
                 ]
             });
 
-            $("body").on('click','.roleattach',function(event){
-                let id = $(this).attr('dataid');
-                let url = "{{ route('role.view-asignrole') }}";
-                $.ajax({
-                    url:url,
-                    type:"GET",
-                    cache:false,
-                    data: {
-                        id:id,
-                        _token:"{{csrf_token()}}"
-                    }
-                })
-                .done(function(data){
-                    $("#idmodal_edit").html(data);
-                    $("#m_modal_5").modal();
-                });
+            $("#new-stage").click(function(){
+                $("#alert-success").css({'display':'none'});
             });
 
             $("body").on('click','.edited',function(event){
                 let id = $(this).attr('dataid');
-                let url = "{{ route('user.edit') }}";
+                let url = "{{ route('role.edit') }}";
                 $.ajax({
                     url:url,
                     type:"GET",
@@ -440,8 +374,7 @@
                 });
             });
 
-
-            $("#form-user").submit(function(event){
+            $("#form-role").submit(function(event){
                 event.preventDefault();
                 let url = $(this).attr('action');
                 let type = $(this).attr('method');
@@ -461,20 +394,9 @@
                     }
                 })
                 .fail(function(data){
-                    console.log(data);
                     if(data.responseJSON.errors.name){
                         $("#help-name").html(data.responseJSON.errors.name);
                     }
-                    if(data.responseJSON.errors.email){
-                        $("#help-email").html(data.responseJSON.errors.email);
-                    }
-                    if(data.responseJSON.errors.password){
-                        $("#help-password").html(data.responseJSON.errors.password);
-                    }
-                    if(data.responseJSON.errors.repassword){
-                        $("#help-repassword").html(data.responseJSON.errors.repassword);
-                    }
-            
                 })
                 .done(function(data){
                     $("#alert-success").html(data);
@@ -486,7 +408,7 @@
 
             $("body").on('click','.deleted',function(event){
                 let id_request = $(this).attr('dataid');
-                let url = "{{ route('user.delete') }}";
+                let url = "{{ route('role.delete') }}";
                 if(confirm('Delete ?')){
                     $.ajax({
                     url:url,
@@ -500,11 +422,11 @@
                     })
                     .fail(function(data){
                         $("#content-alert").html(data);
-                        $("#request_alert").css({'display':'block'});
+                        $("#head-alert").css({'display':'block'});
                     })
                     .done(function(data){
                         $("#content-alert").html(data);
-                        $("#request_alert").css({'display':'block'});
+                        $("#head-alert").css({'display':'block'});
                         table.ajax.reload();
                     });
                 }            

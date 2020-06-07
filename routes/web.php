@@ -129,6 +129,52 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/delete','StageController@delete')
             ->name('stage.delete');
     });
-    
+
+    Route::group(['prefix' => 'role'], function(){
+        Route::get('','RoleController@index')
+            ->name('role.index');
+        Route::get('/data','RoleController@data')
+            ->name('role.data');
+        Route::post('/store','RoleController@store')
+            ->name('role.store');
+        Route::get('/edit','RoleController@edit')
+            ->name('role.edit');
+        Route::post('/update/{id}','RoleController@update')
+            ->name('role.update');
+        Route::post('/delete','RoleController@destroy')
+            ->name('role.delete');
+        Route::get('/view/asign','RoleController@viewAssignRole')
+            ->name('role.view-asignrole');
+        Route::post('/asign/{id}','RoleController@assignRole')
+            ->name('role.assign');
+        Route::get('/data/role/{id}','RoleController@dataRoles')
+            ->name('role.data-role');
+        Route::post('/dettach/{id}','RoleController@unAsignRole')
+            ->name('menus.dettach');
+    });
+
+    Route::group(['prefix' => 'menus'], function(){
+        Route::get('','MenuController@index')
+            ->name('menus.index');
+        Route::get('/data','MenuController@data')
+            ->name('menus.data');
+        Route::post('/store','MenuController@store')
+            ->name('menus.store');
+        Route::post('/delete','MenuController@delete')
+            ->name('menus.delete');
+        Route::get('/edit','MenuController@edit')
+            ->name('menus.edit');
+        Route::post('/update/{id}','MenuController@update')
+            ->name('menus.update');
+        Route::get('/attach','MenuController@attachView')
+            ->name('menus.attach-view');
+        Route::post('/attach/{id}','MenuController@assignRole')
+            ->name('menus.attach');
+        Route::get('/data/role/{id}','MenuController@dataRoles')
+            ->name('menus.data-role');
+        Route::post('/dettach/{id}','MenuController@unAssignRole')
+            ->name('menus.dettach');
+    });
+
 });
 

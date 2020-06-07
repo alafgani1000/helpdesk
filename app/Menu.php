@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $fillable = ['menu_id','role_id'];
+    protected $fillable = ['kode','url','label','name'];
 
     public function roles()
     {
-        return $this->belongsToMany('App\Role');
+        return $this->belongsToMany('App\Role')->withTimestamps();
         
     }    
 }

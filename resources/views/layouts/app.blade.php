@@ -1140,6 +1140,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									</span>
 								</a>
 							</li>
+							
 							<li class="m-menu__section">
 								<h4 class="m-menu__section-text">
 									Master Data
@@ -1212,12 +1213,22 @@ License: You must have a valid license purchased only from themeforest(the above
 											</a>
 										</li>
 										<li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true"  data-menu-submenu-toggle="hover">
-											<a  href="{{ route('user.index') }}" class="m-menu__link m-menu__toggle">
+											<a  href="{{ route('role.index') }}" class="m-menu__link m-menu__toggle">
 												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
 													<span></span>
 												</i>
 												<span class="m-menu__link-text">
 													Role
+												</span>												
+											</a>
+										</li>
+										<li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true"  data-menu-submenu-toggle="hover">
+											<a  href="{{ route('menus.index') }}" class="m-menu__link m-menu__toggle">
+												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
+													<span></span>
+												</i>
+												<span class="m-menu__link-text">
+													Menu
 												</span>												
 											</a>
 										</li>

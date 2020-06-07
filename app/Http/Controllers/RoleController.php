@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use App\User;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,14 @@ class RoleController extends Controller
 
     public function data()
     {
-        $roles = DatatTables(Role::all())->toJson();
+        $roles = DataTables(Role::all())->toJson();
+        return $roles;
+    }
+
+    public function dataRoles($id)
+    {
+        $roles =  DataTables(User::find($id)->roles)->toJson();
+        return $roles;
     }
 
     public function create()
@@ -45,16 +53,16 @@ class RoleController extends Controller
         return view('roles.edit', compact('role'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $role = Role::where('id',$request->id)->update([
+        $role = Role::where('id',$id)->update([
             'name' => $request->name
         ]);
 
         return 'Success';
     }
 
-    public function delete(Request $request)
+    public function destroy(Request $request)
     {
         $role = Role::find($request->id);
         $role->delete();
@@ -62,28 +70,34 @@ class RoleController extends Controller
         return 'Success';
     }
 
-    public function assignRole(Request $request)
+    public function viewAssignRole(Request $request)
+    {
+        $user = User::find($request->id);
+
+        $roles = Role::whereNotIn('id', $user->roles()->pluck('role_id'))->get();
+        return view('users.attach', compact('user', 'roles'));
+    }
+
+    public function assignRole(Request $request, $id)
     {
         $request->validate([
-            'user_id' => 'required',
             'role_id' => 'required'
         ]);
 
-        $user = User::find($request->user_id);
-        $user->roles->attach($request->role_id);
+        $user = User::find($id);
+        $user->roles()->attach($request->role_id);
 
         return 'Assign success';
     }
 
-    public function unAsignRole(Request $request)
+    public function unAsignRole(Request $request,$id)
     {
         $request->validate([
-            'user_id' => 'required',
-            'user_role' => 'required'
+            'role_id' => 'required'
         ]);
 
-        $user = User::find($request->user_id);
-        $user->roles->dettach($request->role_id);
+        $user = User::find($id);
+        $user->roles()->detach($request->role_id);
         
         return 'Un Assign Success';
     }
