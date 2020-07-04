@@ -34,12 +34,14 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('incident.edit');
         Route::post('/delete_attachment','IncidentController@deleteAttachment')
             ->name('incident.delete_attachment');
-        Route::post('/update','IncidentAttachment@update')
+        Route::post('/update','IncidentController@update')
             ->name('incident.update');
         Route::get('/resolve','IncidentController@viewResolve')
             ->name('incident.view_resolve');
         Route::post('/resolve','IncidentController@resolve')
             ->name('incident.resolve');
+        Route::get('/reservasi/{id}', 'IncidentController@reservasi')
+            ->name('incident.reservasi');
     });
 
     // route request
@@ -96,6 +98,13 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('team.asign');
         Route::post('/update/user','TeamController@updateAsignToTeam')
             ->name('team.unasign');
+        // user team
+        Route::get('/userteam/view', 'TeamController@viewUserTeam')
+            ->name('userteam.index');
+        Route::get('/userteam/data', 'TeamController@dataUserTeam')
+            ->name('userteam.data');
+        Route::post('/userteam/store', 'TeamController@asignUserToTeam')
+            ->name('userteam.store');
     });
 
     // route category

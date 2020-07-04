@@ -22,4 +22,9 @@ class Incident extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function team()
+    {
+        return $this->belongsTo('App\Team');
+    }
 }

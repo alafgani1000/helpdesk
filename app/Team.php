@@ -10,6 +10,6 @@ class Team extends Model
 
     public function userTeam()
     {
-        return $this->belongsTo('App\UserTeam');
+        return $this->hasOne('App\UserTeam');
     }
 }

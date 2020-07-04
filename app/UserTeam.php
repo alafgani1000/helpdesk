@@ -8,8 +8,13 @@ class UserTeam extends Model
 {
     protected $fillable = ['user_id','team_id'];
 
-    public function users()
+    public function user()
     {
-        return $this->hashMany('App\Team');
+        return $this->belongsTo('App\Team');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo('App\Team');
     }
 }

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Incident;
 use App\IncidentAttachment;
+use App\Team;
+use App\Category;
+use App\Stage;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DataTables;
@@ -35,7 +39,7 @@ class IncidentController extends Controller
             'location' => $request->location,
             'phone' => $request->phone,
             'user_id' => Auth::user()->id,
-            'stage_id' => '1'
+            'stage_id' => Stage::open()->first()->id
         ]);
 
         // insert incedent data attachment 
@@ -132,6 +136,7 @@ class IncidentController extends Controller
     public function viewResolve(Request $request)
     {
         $incident = Incident::find($request->id);
+        $users = UserTeam::where('id', $incident->team_id)->get();
         return view('incidents.resolve', compact('incident'));
     }
 
@@ -145,9 +150,31 @@ class IncidentController extends Controller
         Incident::where('id',$request->id_incident)->update([
             'resolve_text' => $request->resolve_text,
             'resolve_date' => $request->resolve_date,
-            'stage_id' => 2
+            'stage_id' => Stage::close()->first()->id
         ]);
 
         return "Resolve Success";
+    }
+
+    public function reservasi(Request $request, $id)
+    {
+        $incident = Incident::find($request->id);
+        $teams = Team::all();
+        $categories = Category::all();
+        return view('incidents.reservasi',compact('incident', 'teams', 'categories'));
+    }
+
+    public function reservasi_store(Request $request, $id)
+    {
+        $request->validate([
+            'team' => 'required',
+            'category' => 'required'
+        ]);
+
+        $act = Incident::where('id', $id)->update([
+            'team_id' => $request->team,
+            'category' => $request->category,
+            'ticket_time' => Carbon::now()
+        ]);
     }
 }

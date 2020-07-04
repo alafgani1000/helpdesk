@@ -27,4 +27,9 @@ class Stage extends Model
     {
         $query->where('id',2);
     }
+
+    public function scopeResolve($query)
+    {
+        $query->where('id',3);
+    }
 }

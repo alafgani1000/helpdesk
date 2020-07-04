@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center">
             <div class="mr-auto">
                 <h3 class="m-subheader__title m-subheader__title--separator">
-                    Incident
+                    Master Data
                 </h3>
                 <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
                     <li class="m-nav__item m-nav__item--home">
@@ -21,7 +21,7 @@
                     <li class="m-nav__item">
                         <a href="" class="m-nav__link">
                             <span class="m-nav__link-text">
-                                Incident
+                                User
                             </span>
                         </a>
                     </li>
@@ -94,7 +94,7 @@
     </div>
     <!-- END: Subheader -->
     <div class="m-content">
-        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-20 alert-success" role="alert" id="head-alert" style="display:none">
+        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-20 alert-success" role="alert" id="head-alert" style="display:none;">
             <div class="m-alert__icon">
                 <i class="flaticon-exclamation m--font-brand"></i>
             </div>
@@ -107,7 +107,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Data Incident
+                            Data User
                         </h3>
                     </div>
                 </div>
@@ -218,41 +218,23 @@
                 </div>
                 <!--end: Search Form -->
                 <!--begin: Datatable -->
-                <table class="table table-striped table-hover responsive" width="100%" id="dtincident">
+                <table class="table table-striped table-hover responsive" width="100%" id="dtuser">
                     <thead>
                         <tr>
                             <th title="Field #1">
-                                Incident ID
+                                Name
                             </th>
                             <th title="Field #2">
-                                Incident
+                                Email
+                            </th>
+                            <th title="Field #2">
+                                Team
                             </th>
                             <th title="Field #3">
-                                Location
+                                Created At
                             </th>
                             <th title="Field #4">
-                                User
-                            </th>
-                            <th title="Field #4">
-                                Alocated to
-                            </th>
-                            <th title="Field #5">
-                                Contact
-                            </th>
-                            <th title="Field #6">
-                                Stage
-                            </th>
-                            <th title="Field #7">
-                                Resolve Text
-                            </th>
-                            <th title="Field #8">
-                                Resolve date
-                            </th>
-                            <th title="Field #9">
-                                Created at
-                            </th>
-                            <th title="Field #10">
-                                Actions
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -269,7 +251,7 @@
             <div class="modal-content">
                 <div class="modal-header btn-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Incident
+                        Form Add User To Team
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -278,60 +260,38 @@
                     </button>
                 </div>
                 <div id="idmodal-content">
-                    <form id="formincident" action="{{ route('incident.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="form-user" action="{{ route('userteam.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
-                            <div class="alert alert-success" role="alert" style="display:none;" id="alertSuccess">
+                            <div class="alert alert-success" role="alert" style="display:none;" id="alert-success">
                                 You successfully read this important alert message.
                             </div>
                             <div class="form-group">
-                                <label for="incident-text" class="form-control-label">
-                                    Incident:
+                                <label for="user" class="form-control-label">
+                                    User:
                                 </label>
-                                <textarea class="form-control" id="incident-text" name="incident"></textarea>
-                                <span class="m-form__help text-danger" id="helpIncident">
+                                <select class="form-control" name="user_id">
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="m-form__help text-danger" id="help-user">
                                 
                                 </span>
                             </div>
                             <div class="form-group">
-                                <label for="location-name" class="form-control-label">
-                                    Location:
+                                <label for="team" class="form-control-label">
+                                    Team:
                                 </label>
-                                <input type="text" class="form-control" id="location-name" name="location">
-                                <span class="m-form__help text-danger" id="helpLocation">
+                                <select class="form-control" name="team_id">
+                                    @foreach ($teams as $team)
+                                        <option value="{{ $team->id }}">{{ $team->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="m-form__help text-danger" id="help-team">
                                     
                                 </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone-name" class="form-control-label">
-                                    Phone:
-                                </label>
-                                <input type="text" class="form-control" id="phone-name" name="phone">
-                                <span class="m-form__help text-danger" id="helpPhone">
-                                    
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="addAttachment">
-                                    + Add
-                                </button>
-                            </div>                        
-                            <div class="form-group m-form__group" id="detail">
-                                <label for="location-name" class="form-control-label">
-                                    Attachment:
-                                </label>
-                                <div class="form-group">
-                                    <div class="input-group ">
-                                        <input type="file" id="file2" class="form-control" name="files[]" id>
-                                        
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-danger btn-lg" type="button">
-                                                -
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>                    
+                            </div>                                               
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -352,7 +312,7 @@
             <div class="modal-content">
                 <div class="modal-header btn-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Edit Incident
+                        Form Edit User
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -366,281 +326,109 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="m_modal_reservasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header btn-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Reservasi Ticket
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">
-                            &times;
-                        </span>
-                    </button>
-                </div>
-                <div id="idmodal_reservasi">
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="m_modal_resolve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header btn-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Form Resolve
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">
-                            &times;
-                        </span>
-                    </button>
-                </div>
-                <div id="id_modal_resolve">
-                    
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 @endsection
 @push('scripts')
     <script>
-        var table = '';
-        function resetForm(){
-            $("#incident-text").val('');
-            $("#location-name").val('');
-            $("#phone-name").val('');
-            $(".detach").detach();
-            $("#file2").val('');
-        }
-
-        function resetMessage(){
-            $("#helpIncident").html('');
-            $("#helpLocation").html('');
-            $("#helpPhone").html(''); 
-        }
-
-        function resetAll(){
-            resetMessage();
-            resetForm();
-        }
-
-        function delete_attachment(sys, id = null){
-            if(confirm('Delete Attachment ?')){
-                $.ajax({
-                    type:"POST",
-                    url:"{{ url('incident/delete_attachment') }}",
-                    data:{
-                        id:id,
-                        _token: "{{csrf_token()}}"
-                    }
-                    
-                })
-                .done(function(data){
-                    $("#alertSuccess").html(data);
-                    $("#alertSuccess").css({'display':'block'});
-                    $(sys).parent().parent().remove();
-                })
-                .fail(function(){
-                    
-                });
-            }        
-        }
+        var table ='';
 
         $(function(){
-            $("#newIncident").click(function(){
-                resetAll();
-            });
-
-            $("#addAttachment").click(function(){
-                $("#detail").append(
-                    '<div class="form-group attachment detach">'+
-                        '<div class="input-group">'+
-                            '<input type="file" class="form-control" name="files[]">'+                                        
-                            '<span class="input-group-btn">'+
-                                '<button class="btn btn-danger btn-lg remove" type="button">-</button>'+
-                            '</span>'+
-                        '</div>'+
-                    '</div>'
-                );
-            });
-
-            $("body").on("click",".remove",function(){
-                $(this).parents(".attachment").remove();
-            });
-
-            table = $('#dtincident').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ url('incident/data') }}",
-                    type: "POST",
-                    dataType: "JSON",
-                    data:{ _token: "{{csrf_token()}}"}
-                },
-                columns: [
-                        {data:'id', name:'id'},
-                        {data:'text', name:'text'},
-                        {data:'location', name:'location'},
-                        {data:'user.name', name:'user.name'},
-                        {data:'user.name', name:'user.name'},
-                        {data:'phone', name:'phone'},
-                        {data:'stage.text', name:'stage.text'},
-                        {data:'resolve_text', name:'resolve_text'},
-                        {data:'resolve_date', name:'resolve_date'},
-                        {data:'created_at', name:'created_at'},
-                        {data:'id', render: function(d){
-                            return '<div class="btn btn-group"><button class="btn btn-sm btn-primary" onclick="edit('+d+')"><i class="fa fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleted('+d+')"><i class="fa fa-trash"></i></button><button class="btn btn-sm btn-success" onclick="view_resolve('+d+')"><i class="fa fa-check"></i></button><button class="btn btn-sm btn-warning" onclick="reservasi('+d+')"><i class="fa fa-edit"></i></button></div>';
-                        }}
-                    ],
-            });
-
-           $("#formincident").submit(function(event){
-                event.preventDefault();
-                let url = $(this).attr('action');
-                let method = $(this).attr('method');
-                let enctype = $(this).attr('enctype');
-                let data = new FormData(this);
-
-                $.ajax({
-                    type:method,
-                    url:url,
-                    enctype:enctype,
-                    processData:false,
-                    contentType:false,
-                    cache:false,
-                    data:data,
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                        resetMessage();
-                    }
-                })
-                .fail(function(data){
-                    if(data.responseJSON.errors.incident){
-                        $("#helpIncident").html(data.responseJSON.errors.incident);
-                    }
-                    if(data.responseJSON.errors.location){
-                        $("#helpLocation").html(data.responseJSON.errors.location);
-                    }
-                    if(data.responseJSON.errors.phone){
-                        $("#helpPhone").html(data.responseJSON.errors.phone); 
-                    } 
-                    $("#alertSuccess").html('');
-                    $("#alertSuccess").css({'display':'none'});                                    
-                })
-                .done(function(data){
-                    $("#alertSuccess").html(data);
-                    $("#alertSuccess").css({'display':'block'});
-                    resetForm();  
-                    table.ajax.reload();
-                });
-            });
-        });
-
-        function edit(id=null){
-            $.ajax({
+            table = $("#dtuser").DataTable({
+                processing:true,
+                serverSide:true,
+                ajax:{
+                    url:"{{ route('userteam.data') }}",
                     type:"GET",
-                    url:"{{ url('incident/edit') }}",
-                    cache:false,
+                    dataType:"JSON",
                     data:{
-                        id:id
-                    },
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                
+                        "_token":"{{csrf_token()}}"
                     }
-                })
-                .fail(function(data){
-                                                      
+                },
+                columns:[
+                    {data:'name', name:'name'},
+                    {data:'email', name:'email'},
+                    {data:'user_team.team.name', name:'user_team.team.name',"defaultContent": "<i>Not set</i>"},
+                    {data:'created_at', name:'created_at'},
+                    {data:'id', render:function(data){ 
+                        return'<div class="btn-group"><button class="btn btn-warning btn-sm edited" dataid=\''+data+'\'><i class="fa fa-edit text-white"></i></button>'+
+                        '<button class="btn btn-danger btn-sm deleted" dataid=\''+data+'\'><i class="fa fa-trash"></i></button></div>'
+                        }
+                    }
+                ]
+            });
+
+            $("body").on('click','.roleattach',function(event){
+                let id = $(this).attr('dataid');
+                let url = "{{ route('role.view-asignrole') }}";
+                $.ajax({
+                    url:url,
+                    type:"GET",
+                    cache:false,
+                    data: {
+                        id:id,
+                        _token:"{{csrf_token()}}"
+                    }
                 })
                 .done(function(data){
                     $("#idmodal_edit").html(data);
                     $("#m_modal_5").modal();
                 });
-        }
+            });
 
-        function reservasi(id=null){
-            $.ajax({
-                    type:"GET",
-                    url:"{{ url('incident/reservasi') }}/"+id,
-                    cache:false,
-                    data:{
-                        id:id
-                    },
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                
-                    }
-                })
-                .fail(function(data){
-                                                      
-                })
-                .done(function(data){
-                    $("#idmodal_reservasi").html(data);
-                    $("#m_modal_reservasi").modal();
-                });
-        }
-
-        function deleted(id=null){
-            if(confirm('Delete ?')){
+            $("body").on('click','.edited',function(event){
+                let id = $(this).attr('dataid');
+                let url = "{{ route('user.edit') }}";
                 $.ajax({
-                    type:"POST",
-                    url:"{{ url('incident/delete') }}",
-                    cache:false,
-                    data:{
-                        id:id
-                    },
-                    headers:{
-                        'X-CSRF-TOKEN':$('#token').attr('content')
-                    },
-                    beforeSend:function() {
-                
-                    }
-                })
-                .fail(function(data){
-                    $("#content-alert").html('');
-                    $("#head-alert").css({'display':'none'});                                  
-                })
-                .done(function(data){
-                    $("#content-alert").html(data);
-                    $("#head-alert").css({'display':'block'});
-                    table.ajax.reload();  
-                });
-            }
-        }        
-
-        function view_resolve(id=null){
-            if(confirm('Resolve ?')){
-                $.ajax({
+                    url:url,
                     type:"GET",
-                    url:"{{ url('incident/resolve') }}",
                     cache:false,
-                    data:{
-                        id:id
-                    },
-                    headers:{
-                        'X-CSRF-TOKEN':$("#token").attr("content")
+                    data: {
+                        id:id,
+                        _token:"{{csrf_token()}}"
+                    }
+                })
+                .done(function(data){
+                    $("#idmodal_edit").html(data);
+                    $("#m_modal_5").modal();
+                });
+            });
+
+
+            $("#form-user").submit(function(event){
+                event.preventDefault();
+                let url = $(this).attr('action');
+                let type = $(this).attr('method');
+                let enctype = $(this).attr('enctype');
+                let data = new FormData(this);
+
+                $.ajax({
+                    url:url,
+                    type:type,
+                    enctype:enctype,
+                    processData:false,
+                    contentType:false,
+                    cache:false,
+                    data:data,
+                    headers: {
+                        'X-CSRF-TOKEN':$('#token').attr('token')
                     }
                 })
                 .fail(function(data){
-                    $("#resolve_head_alert").css({'display':'none'});
+                    console.log(data);
+                    if(data.responseJSON.errors.user_id){
+                        $("#help-user").html(data.responseJSON.errors.user_id);
+                    }
+                    if(data.responseJSON.errors.team_id){
+                        $("#help-team").html(data.responseJSON.errors.team_id);
+                    }
+            
                 })
                 .done(function(data){
-                    $("#id_modal_resolve").html(data);
-                    $("#m_modal_resolve").modal();
+                    $("#alert-success").html(data);
+                    $("#alert-success").css({'display':'block'});
+                    table.ajax.reload();
                 });
-            }
-        }
+            });
+        });
     </script>
 @endpush

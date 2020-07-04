@@ -1190,6 +1190,14 @@ License: You must have a valid license purchased only from themeforest(the above
 													Add Category
 												</span>												
 											</a>
+											<a  href="{{ route('userteam.index') }}" class="m-menu__link m-menu__toggle">
+												<i class="m-menu__link-bullet m-menu__link-bullet--dot">
+													<span></span>
+												</i>
+												<span class="m-menu__link-text">
+													User Team
+												</span>												
+											</a>
 										</li>
 									</ul>
 								</div>

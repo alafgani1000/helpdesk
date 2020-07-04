@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use DataTables;
 use App\Team;
 use App\UserTeam;
+use App\User;
 
 class TeamController extends Controller
 {
@@ -68,22 +69,46 @@ class TeamController extends Controller
 
     public function asignUserToTeam(Request $request)
     {
+        $request->validate([
+            'user_id' => 'required',
+            'team_id' => 'required'
+        ]);
+
         UserTeam::create([
             'user_id' => $request->user_id,
             'team_id' => $request->team_id
         ]);
 
-        return 'Created Success';
+        return 'Asign Success';
     }
 
     public function updateAsignToTeam(Request $request)
     {
+        $request->validate([
+            'user_id' => 'required',
+            'team_id' => 'required'
+        ]);
+
         UserTeam::where('id', $request->id)->update([
             'user_id' => $request->user_id,
             'team_id' => $request->team_id
         ]);
 
         return 'Updated Success';
+    }
+
+    public function viewUserTeam()
+    {
+        $users = User::doesntHave('userTeam')->get();
+        $teams = Team::all();
+
+        return view('userteams.index', compact('users','teams'));
+    }
+
+    public function dataUserTeam()
+    {
+        $users = DataTables(User::with('userTeam','userTeam.team')->get())->toJson();
+        return $users;
     }
 
 }
