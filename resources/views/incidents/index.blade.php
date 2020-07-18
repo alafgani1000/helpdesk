@@ -218,48 +218,50 @@
                 </div>
                 <!--end: Search Form -->
                 <!--begin: Datatable -->
-                <table class="table table-striped table-hover responsive" width="100%" id="dtincident">
-                    <thead>
-                        <tr>
-                            <th title="Field #1">
-                                Incident ID
-                            </th>
-                            <th title="Field #2">
-                                Incident
-                            </th>
-                            <th title="Field #3">
-                                Location
-                            </th>
-                            <th title="Field #4">
-                                User
-                            </th>
-                            <th title="Field #4">
-                                Alocated to
-                            </th>
-                            <th title="Field #5">
-                                Contact
-                            </th>
-                            <th title="Field #6">
-                                Stage
-                            </th>
-                            <th title="Field #7">
-                                Resolve Text
-                            </th>
-                            <th title="Field #8">
-                                Resolve date
-                            </th>
-                            <th title="Field #9">
-                                Created at
-                            </th>
-                            <th title="Field #10">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
+                <div>
+                    <table class="table table-striped table-hover responsive" width="100%" id="dtincident">
+                        <thead>
+                            <tr>
+                                <th title="Field #1">
+                                    Incident ID
+                                </th>
+                                <th title="Field #2">
+                                    Incident
+                                </th>
+                                <th title="Field #3">
+                                    Location
+                                </th>
+                                <th title="Field #4">
+                                    User
+                                </th>
+                                <th title="Field #4">
+                                    Alocated to
+                                </th>
+                                <th title="Field #5">
+                                    Contact
+                                </th>
+                                <th title="Field #6">
+                                    Stage
+                                </th>
+                                <th title="Field #7">
+                                    Resolve Text
+                                </th>
+                                <th title="Field #8">
+                                    Resolve date
+                                </th>
+                                <th title="Field #9">
+                                    Created at
+                                </th>
+                                <th title="Field #10">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
                 <!--end: Datatable -->
             </div>
         </div>
@@ -479,7 +481,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ url('incident/data') }}",
-                    type: "POST",
+                    type: "GET",
                     dataType: "JSON",
                     data:{ _token: "{{csrf_token()}}"}
                 },
@@ -488,7 +490,8 @@
                         {data:'text', name:'text'},
                         {data:'location', name:'location'},
                         {data:'user.name', name:'user.name'},
-                        {data:'user.name', name:'user.name'},
+                        {data:'team.name', name:'team.name', 
+                        defaultContent: '<i>Not set</i>'},
                         {data:'phone', name:'phone'},
                         {data:'stage.text', name:'stage.text'},
                         {data:'resolve_text', name:'resolve_text'},

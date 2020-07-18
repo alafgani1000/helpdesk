@@ -9,6 +9,7 @@ use App\Team;
 use App\Category;
 use App\Stage;
 use App\User;
+use App\UserTeam;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DataTables;
@@ -22,7 +23,7 @@ class IncidentController extends Controller
 
     public function data()
     {
-        $incident = DataTables(Incident::with(['stage','user'])->get())->toJson();
+        $incident = DataTables(Incident::with(['stage','user','team'])->get())->toJson();
         return $incident;
     }
 
@@ -144,12 +145,11 @@ class IncidentController extends Controller
     {
         $request->validate([
             'resolve_text' => 'required',
-            'resolve_date' => 'required'
         ]);
 
         Incident::where('id',$request->id_incident)->update([
             'resolve_text' => $request->resolve_text,
-            'resolve_date' => $request->resolve_date,
+            'resolve_date' => Carbon::now(),
             'stage_id' => Stage::close()->first()->id
         ]);
 
@@ -173,8 +173,11 @@ class IncidentController extends Controller
 
         $act = Incident::where('id', $id)->update([
             'team_id' => $request->team,
-            'category' => $request->category,
-            'ticket_time' => Carbon::now()
+            'category_id' => $request->category,
+            'ticket_time' => Carbon::now(),
+            'ticket' => sprintf('%08d', $id)
         ]);
+
+        return "Tiket berhasil dibuat";
     }
 }

@@ -1,8 +1,8 @@
 
-<form id="formincident_reservasi" action="{{ route('incident.update') }}" method="POST" enctype="multipart/form-data">
+<form id="formincident_reservasi" action="{{ route('incident.reservasi.store', $incident->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="modal-body">
-        <div class="alert alert-success" role="alert" style="display:none;" id="alertSuccess">
+        <div class="alert alert-success" role="alert" style="display:none;" id="alert-success">
             You successfully read this important alert message.
         </div>
         <div class="form-group">
@@ -133,13 +133,12 @@
                 if(data.responseJSON.errors.category){
                     $("#help_category").html(data.responseJSON.errors.category);
                 }
-                $("#alertSuccess").html('');
-                $("#alertSuccess").css({'display':'none'});                                    
+                $("#alert-success").html('');
+                $("#alert-success").css({'display':'none'});                                    
             })
             .done(function(data){
-                $("#alertSuccess").html(data);
-                $("#alertSuccess").css({'display':'block'});
-                resetForm();  
+                $("#alert-success").html(data);
+                $("#alert-success").css({'display':'block'});
                 table.ajax.reload();
             });
         });

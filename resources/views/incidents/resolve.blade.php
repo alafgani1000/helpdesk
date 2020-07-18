@@ -14,7 +14,7 @@
             
             </span>
         </div>
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="resolve_date" class="form-control-label">
                 Resolve date:
             </label>
@@ -22,7 +22,7 @@
             <span class="m-form__help text-danger" id="help_resolve_date">
                 
             </span>
-        </div>              
+        </div>               --}}
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">

@@ -24,7 +24,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::group(['prefix' => 'incident'], function () {
         Route::get('','IncidentController@index')
             ->name('incident.index');
-        Route::post('/data','IncidentController@data')
+        Route::get('/data','IncidentController@data')
             ->name('incident.data');
         Route::post('/store','IncidentController@store')
             ->name('incident.store');
@@ -42,6 +42,8 @@ Route::group(['middleware' => ['auth']], function() {
             ->name('incident.resolve');
         Route::get('/reservasi/{id}', 'IncidentController@reservasi')
             ->name('incident.reservasi');
+        Route::post('reservasi/{id}', 'IncidentController@reservasi_store')
+            ->name('incident.reservasi.store');
     });
 
     // route request
